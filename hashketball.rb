@@ -180,3 +180,17 @@ def player_numbers(teams_name)
   end
   array
 end 
+
+def player_stats(player_name)
+  game_hash.each do |home_or_away, info_category|
+    info_category.each do |info, contents|
+        if contents.is_a?(Hash)
+          contents.each do |name, stats|
+            if name == player_name
+              return stats
+            end 
+          end
+        end
+    end 
+  end
+end 
