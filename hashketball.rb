@@ -212,3 +212,43 @@ def big_shoe_rebounds
   end
   rebounds
 end 
+
+def most_points_scored
+  player_name = ""
+  most_points = 0
+  game_hash.each do |home_or_away, info_category|
+    info_category.each do |info, contents|
+      if contents.is_a?(Hash)
+        contents.each do |name, stats|
+          if stats[:points].to_i > most_points.to_i
+            most_points = stats[:points]
+            player_name = name
+          end
+        end
+      end
+    end 
+  end
+  player_name
+end 
+
+def winning_team
+  team_points = {"Brooklyn Nets" => 0, "Charlotte Hornets" => 0}
+  game_hash.each do |home_or_away, info_category|
+    info_category.each do |info, contents|
+      if contents.is_a?(Hash)
+        contents.each do |name, stats|
+          team_points[game_hash[home_or_away][:team_name]] += stats[:points]
+        end
+      end
+    end 
+  end
+  winning_points = 0 
+  team_name = ""
+  team_points.each do |name, points|
+    if winning_points < points
+      team_name = name
+      winning_points = points
+    end
+  end
+  team_name
+end
