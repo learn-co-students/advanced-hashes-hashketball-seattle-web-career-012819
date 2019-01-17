@@ -153,4 +153,15 @@ def team_colors(teams_name)
   end
 end 
 
+def team_names
+  array = []
+  game_hash.each do |home_or_away, info_category|
+    info_category.each do |info, contents|
+      if info == :team_name
+        array << contents
+      end
+    end 
+  end
+  array
+end 
 
