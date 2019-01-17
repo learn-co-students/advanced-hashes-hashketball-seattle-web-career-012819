@@ -252,3 +252,22 @@ def winning_team
   end
   team_name
 end
+
+def player_with_longest_name
+  longest_name = 0
+  player_name = ""
+  game_hash.each do |home_or_away, info_category|
+    info_category.each do |info, contents|
+        if contents.is_a?(Hash)
+          contents.each do |name, stats|
+              if name.length > longest_name
+                longest_name = name.length
+                player_name = name
+              end
+            end 
+          end
+        end
+    end 
+  end
+  player_name
+end 
