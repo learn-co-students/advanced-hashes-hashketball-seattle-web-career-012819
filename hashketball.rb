@@ -165,3 +165,18 @@ def team_names
   array
 end 
 
+def player_numbers(teams_name)
+  array = []
+  game_hash.each do |home_or_away, info_category|
+    info_category.each do |info, contents|
+      if info_category[:team_name] == teams_name
+        if contents.is_a?(Hash)
+          contents.each do |name, stats|
+            array << stats[:number]
+          end
+        end
+      end
+    end 
+  end
+  array
+end 
