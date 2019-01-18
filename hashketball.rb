@@ -95,3 +95,41 @@ def big_shoe_rebounds
     return team[:players][big_shoe_player][:rebounds] if team[:players][big_shoe_player]
   end
 end
+
+def most_points_scored
+  points_scored = {}
+  game_hash.values.each do |team|
+    team[:players].each do |player, stats|
+      points_scored[player] = stats[:points]
+    end
+  end
+
+  points_scored.max_by { |player, points| points }[0]
+end
+
+def winning_team
+  scores = {}
+
+  game_hash.values.each do |team|
+    team_score = team[:players].map { |player, stats| stats[:points] }.sum
+    scores[team[:team_name]] = team_score
+  end
+
+  scores.max_by { |team, score| score}[0]
+end
+
+def player_with_longest_name
+  all_player_names = game_hash.flat_map { |location, team| team[:players].keys }
+  all_player_names.max_by { |name| name.length }
+end
+
+def long_name_steals_a_ton?
+  # determine player with most steals
+  balls_stolen = {}
+  game_hash.values.each do |team|
+    team[:players].each { |player, stats| balls_stolen[player] = stats[:steals] }
+  end
+  most_steals = balls_stolen.max_by { |player, steals| steals }[0]
+
+  most_steals == player_with_longest_name
+end
