@@ -168,8 +168,13 @@ end
 def player_stats(player_name)
   game_hash.each do |team, details|
     return details[:players].each do |name, stats|
-      if [:name]
-  
+      if name == player_name
+        return stats 
+      else
+        return NIL
+      end
+    end
+  end
 end
 
 
