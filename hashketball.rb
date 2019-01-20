@@ -153,19 +153,15 @@ def team_names
   end
 end
 
-def teams
-  teams = game_hash.values
-end
-
-
-def fetch_team(team_name)
-  teams.find{|team| team.fetch(:team_name) == team_name}
-end
-
 def player_numbers(team_name)
-  fetch_team(team_name)[:players].map do |player|
-  player[:number]
-end
+  numbers = []
+  game_hash.each do |team, details|
+    if details[:team_name] == team_name
+      details[:players].each do |name, stats|
+        numbers << stats[:number]
+      end
+    end
+  numbers
 end
 
 def player_stats(player_name)
