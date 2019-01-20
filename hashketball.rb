@@ -170,7 +170,7 @@ def player_stats(player_name)
     return details[:players].each do |name, stats|
       if name == player_name
         return stats 
-      else
+      elsif name =! player_name
         return NIL
       end
     end
