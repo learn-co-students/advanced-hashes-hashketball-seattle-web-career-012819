@@ -161,6 +161,7 @@ def player_numbers(team_name)
         numbers << stats[:number]
       end
     end
+  end
   numbers
 end
 
