@@ -166,6 +166,9 @@ def player_numbers(team_name)
 end
 
 def player_stats(player_name)
+  game_hash.each do |team, details|
+    return details[:players].each do |name, stats|
+      if [:name]
   
 end
 
