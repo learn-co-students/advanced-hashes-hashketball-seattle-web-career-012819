@@ -1,5 +1,4 @@
 
-
 def game_hash
 	game_hash = {
 		home: {
@@ -115,6 +114,26 @@ def game_hash
 			}
 		}
 	}
+end
+
+def num_points_scored(player_name)
+	points_scored = nil
+	game_hash.each do |location, team_data|
+		team_data.each do |attribute, value|
+			if attribute == :players 
+				value.each do |team_mate, stat|
+					if team_mate == player_name
+						stat.each do |key, result|
+							if key == :points && points_scored == nil 
+								points_scored = result
+							end
+						end
+					end
+				end
+			end
+		end
+	end			
+	points_scored 
 end
 
 
