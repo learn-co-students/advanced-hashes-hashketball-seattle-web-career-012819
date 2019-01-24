@@ -173,11 +173,85 @@ def team_colors(team_to_find)
 	team_color_return
 end
 
+def team_names
+	team_names_return = []
+	game_hash.each do |location, team_data|
+		team_data.each do |attribute, value|
+			if attribute == :team_name
+				team_names_return << value 
+			end
+		end
+	end
+	team_names_return
+end
 
+def player_numbers(team_to_find)
+	team_found = false 
+	player_jerseys_return = []
+	game_hash.each do |location, team_data|
+		team_data.each do |attribute, value|
+			if attribute == :team_name && value == team_to_find
+				team_found = true
+			else
+				if team_found && attribute == :players 
+					value.each do |key, result|
+						result.each do |stat, stat_value|
+							if stat == :number
+								player_jerseys_return << stat_value
+							end
+						end
+					end
+				end
+			end
+		end
+		team_found = false 
+	end
+	player_jerseys_return
+end
 
+def player_stats(player_name)	
+	player_stats_return = nil 
+	game_hash.each do |location, team_data|
+		team_data.each do |attribute, value|
+			if attribute == :players 
+				value.each do |team_mate, stat|
+					if team_mate == player_name && player_stats_return == nil
+						player_stats_return = stat 
+					end
+				end
+			end
+		end
+	end
+	player_stats_return
+end
 
-
-
+def big_shoe_rebounds
+	rebounds_to_return = nil
+	biggest_shoe_size = []
+	game_hash.each do |team, team_hash|
+		team_hash.each do |team_data, data_item|
+			if team_data == :players
+				data_item.each do |team_mate, stat_hash|
+					update_record = false
+					stat_hash.each do |stat, stat_val|
+						if stat == :shoe
+							if biggest_shoe_size.length < 1 || biggest_shoe_size[1][:shoe] < stat_val
+								update_record = true
+							end
+						end
+					end
+					if update_record
+						biggest_shoe_size = []
+						biggest_shoe_size << team_mate
+						biggest_shoe_size << stat_hash
+						rebounds_to_return = biggest_shoe_size[1][:rebounds]
+					end
+				end
+			end
+		end
+	end
+	rebounds_to_return
+end
 
 
 
