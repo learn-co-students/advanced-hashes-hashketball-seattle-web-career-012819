@@ -42,9 +42,10 @@ def num_points_scored(player)
 	end
 	points_scored
 end
+# num_points_scored("Reggie Evans") # => 12
 
 def shoe_size(player)
-	shoe_size = 0
+  shoe_size = 0
   	game_hash[:home][:players].each do |player_name, player_hash|
     	if player == player_name
 			shoe_size = player_hash[:shoe]
@@ -57,7 +58,7 @@ def shoe_size(player)
 	end
 	shoe_size
 end
-shoe_size("Mason Plumlee")
+# shoe_size("Mason Plumlee") # => 19
 
 def team_colors(team)
   # PREVIOUS SOLUTION
@@ -71,11 +72,13 @@ def team_colors(team)
     return team_info_hash[:colors] if team_info_hash[:team_name] == team
   end
 end
+# team_colors("Brooklyn Nets") # => "Black", "White"
 
 def team_names
   teams = []
   teams << game_hash[:home][:team_name] << game_hash[:away][:team_name]
 end
+# team_name # => ["Brooklyn Nets", "Charlotte Hornets"]
 
 def player_numbers(team)
   numbers = []
@@ -92,6 +95,7 @@ def player_numbers(team)
 		return numbers.sort
 	end
 end
+# player_numbers("Brooklyn Nets") # => [0, 1, 11, 30, 31]
 
 def player_stats(player)
   game_hash.each do |location, team_info_hash|
@@ -104,6 +108,7 @@ def player_stats(player)
     end
   end
 end
+# player_stats("Bismak Biyombo") # => {:number=>0, :shoe=>16, :points=>12, :rebounds=>4, :assists=>7, :steals=>7, :blocks=>15, :slam_dunks=>10}
 
 def big_shoe_rebounds
   # returns the number of rebounds of the player with the biggest shoe size
@@ -114,13 +119,8 @@ def big_shoe_rebounds
     # location = :home,:away; players_hash = :team_name, :colors, :players
     team_info_hash[:players].each do |player_name, player_info_hash|
       # player_name = "Jeff Adrian" ect., player_info_hash = :number, :shoe, :points, :rebounds, :assists, :steals, :blocks, :slam_dunks
-      if player_info_hash[:shoe] == biggest_shoe
-        player_biggest_shoe = player_name
-        if player_name == player_biggest_shoe
-			return player_info_hash[:rebounds]
-		# return player_biggest_shoe
-		end
-      end
+      player_biggest_shoe = player_name if player_info_hash[:shoe] == biggest_shoe
+      return player_info_hash[:rebounds] if player_name == player_biggest_shoe
     end
   end
 end
