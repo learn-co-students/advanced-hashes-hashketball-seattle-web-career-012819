@@ -4,7 +4,6 @@ def game_hash
   game = {
     :home => {
       :team_name => "Brooklyn Nets",
-      binding.pry
       :colors => ["Black", "White"],
       :players => {
         "Alan Anderson" => { :number => 0, :shoe => 16, :points => 22, :rebounds => 12, :assists => 12, :steals => 3, :blocks => 1, :slam_dunks => 1 },
@@ -30,30 +29,99 @@ end
 
 def num_points_scored(player)
   points_scored = 0
-  game_hash[:home][:players].each do |player_name, player_hash|
-		if player == player_name
-			points_scored = player_hash[:points]
+  game_hash[:home][:players].each do |player_name, player_info_hash|
+    # player_name = home game player names string(key), player_info_hash = player_info_hash = :number, :shoe, :points, :rebounds, :assists, :steals, :blocks, :slam_dunks
+    if player == player_name
+			points_scored = player_info_hash[:points]
 		end
 	end
-	game_hash[:away][:players].each do |player_name, player_hash|
+	game_hash[:away][:players].each do |player_name, player_info_hash|
 		if player == player_name
-			points_scored = player_hash[:points]
+			points_scored = player_info_hash[:points]
 		end
 	end
 	points_scored
 end
 
-def shoe_size
+def shoe_size(player)
+	shoe_size = 0
+  	game_hash[:home][:players].each do |player_name, player_hash|
+    	if player == player_name
+			shoe_size = player_hash[:shoe]
+		end
+	end
+	game_hash[:away][:players].each do |player_name, player_hash|
+		if player == player_name
+			shoe_size = player_hash[:shoe]
+		end
+	end
+	shoe_size
 end
+shoe_size("Mason Plumlee")
 
-def team_colors
+def team_colors(team)
+  # PREVIOUS SOLUTION
+  # if game_hash[:home][:team_name] == team
+	# 	team_colors = game_hash[:home][:colors]
+	# elsif game_hash[:away][:team_name] == team
+	# 	team_colors = game_hash[:away][:colors]
+	# end
+  game_hash.each do |location, team_info_hash|
+    # location = :home,:away; players_hash = :team_name, :colors, :players
+    return team_info_hash[:colors] if team_info_hash[:team_name] == team
+  end
 end
 
 def team_names
+  teams = []
+  teams << game_hash[:home][:team_name] << game_hash[:away][:team_name]
 end
 
-def player_numbers
+def player_numbers(team)
+  numbers = []
+	if team == "Brooklyn Nets"
+		game_hash[:home][:players].each do |player_name, player_info_hash|
+      # player_name = home game player names string(key), player_info_hash = player_info_hash = :number, :shoe, :points, :rebounds, :assists, :steals, :blocks, :slam_dunks
+			numbers << player_info_hash[:number]
+		end
+		return numbers.sort
+	else team == "Charlotte Hornets"
+			game_hash[:away][:players].each do |player_name, player_info_hash|
+			numbers << player_info_hash[:number]
+		end
+		return numbers.sort
+	end
 end
 
-def player_stats
+def player_stats(player)
+  game_hash.each do |location, team_info_hash|
+    # location = :home,:away; players_hash = :team_name, :colors, :players
+    team_info_hash[:players].each do |player_name, player_info_hash|
+      # player_name = "Jeff Adrian" ect., player_info_hash = :number, :shoe, :points, :rebounds, :assists, :steals, :blocks, :slam_dunks
+      if player_name == player
+        return player_info_hash
+      end
+    end
+  end
 end
+
+def big_shoe_rebounds
+  # returns the number of rebounds of the player with the biggest shoe size
+  # Mason Plumlee	:shoe => 19	:rebounds => 12
+  biggest_shoe = 19
+  player_biggest_shoe = ""
+  game_hash.each do |location, team_info_hash|
+    # location = :home,:away; players_hash = :team_name, :colors, :players
+    team_info_hash[:players].each do |player_name, player_info_hash|
+      # player_name = "Jeff Adrian" ect., player_info_hash = :number, :shoe, :points, :rebounds, :assists, :steals, :blocks, :slam_dunks
+      if player_info_hash[:shoe] == biggest_shoe
+        player_biggest_shoe = player_name
+        if player_name == player_biggest_shoe
+			return player_info_hash[:rebounds]
+		# return player_biggest_shoe
+		end
+      end
+    end
+  end
+end
+# => big_shoe_rebounds = 12
