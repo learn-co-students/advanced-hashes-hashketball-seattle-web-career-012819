@@ -1,5 +1,3 @@
-require 'pry'
-
 def game_hash
   game = {
     :home => {
@@ -46,14 +44,15 @@ end
 
 def shoe_size(player)
   shoe_size = 0
-  	game_hash[:home][:players].each do |player_name, player_hash|
-    	if player == player_name
-			shoe_size = player_hash[:shoe]
+  game_hash[:home][:players].each do |player_name, player_info_hash|
+    # player_name = home game player names string(key), player_info_hash = player_info_hash = :number, :shoe, :points, :rebounds, :assists, :steals, :blocks, :slam_dunks
+    if player == player_name
+			shoe_size = player_info_hash[:shoe]
 		end
 	end
-	game_hash[:away][:players].each do |player_name, player_hash|
+	game_hash[:away][:players].each do |player_name, player_info_hash|
 		if player == player_name
-			shoe_size = player_hash[:shoe]
+			shoe_size = player_info_hash[:shoe]
 		end
 	end
 	shoe_size
@@ -113,15 +112,19 @@ end
 def big_shoe_rebounds
   # returns the number of rebounds of the player with the biggest shoe size
   # Mason Plumlee	:shoe => 19	:rebounds => 12
-  biggest_shoe = 19
+  biggest_shoe = 0
+  biggest_rebounds = 0
   player_biggest_shoe = ""
   game_hash.each do |location, team_info_hash|
     # location = :home,:away; players_hash = :team_name, :colors, :players
     team_info_hash[:players].each do |player_name, player_info_hash|
       # player_name = "Jeff Adrian" ect., player_info_hash = :number, :shoe, :points, :rebounds, :assists, :steals, :blocks, :slam_dunks
-      player_biggest_shoe = player_name if player_info_hash[:shoe] == biggest_shoe
-      return player_info_hash[:rebounds] if player_name == player_biggest_shoe
+      if player_info_hash[:shoe] > biggest_shoe
+        biggest_shoe = player_info_hash[:shoe]
+      end
+      biggest_rebounds = player_info_hash[:rebounds] if player_info_hash[:shoe] == biggest_shoe
     end
   end
+  return biggest_rebounds
 end
 # => big_shoe_rebounds = 12
