@@ -136,6 +136,44 @@ def num_points_scored(player_name)
 	points_scored 
 end
 
+def shoe_size(player_name)
+	shoe_return = nil 
+	game_hash.each do |location, team_data|
+		team_data.each do |attribute, value|
+			if attribute == :players 
+				value.each do |team_mate, stat|
+					if team_mate == player_name
+						stat.each do |key, result|
+							if key == :shoe && shoe_return == nil
+								shoe_return = result
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	shoe_return
+end
+
+def team_colors(team_to_find)
+	team_color_return = nil 
+	team_found = false
+	game_hash.each do |location, team_data|
+		team_data.each do |attribute, value|
+			if value == team_to_find && team_found == false 
+				team_found = true 
+			else
+				if team_found && attribute == :colors && team_color_return == nil
+					team_color_return = value
+				end
+			end
+		end
+	end
+	team_color_return
+end
+
+
 
 
 
