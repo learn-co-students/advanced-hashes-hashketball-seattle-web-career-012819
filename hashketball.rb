@@ -135,13 +135,12 @@ end
 
 def team_colors(team_name)
   #returns requested teams colors, and nil if team not playing
-  game_hash.values.each do |team|
+  game_hash.each_value do |team|
     if (team[:team_name] == team_name)
       return team[:colors]
-    else
-      nil
     end
   end
+
   nil
 end
 
@@ -154,10 +153,10 @@ def player_numbers(team_name)
   game_hash.each_value do |team|
      if team_name == team[:team_name]
        return team[:players].values.map{|stats| stats[:number]}
-     else
-       nil
      end
    end
+
+   nil
 end
 
 def player_stats(player)
@@ -168,47 +167,27 @@ def big_shoe_rebounds
   all_players.values.max_by{|stats| stats[:shoe]}[:rebounds]
 end
 
+def most_points_scored
+  #max_by returns array with key as first item (name) and value as second item (stats)
+  all_players.max_by{|player,stats| stats[:points]}[0]
+end
+
+def winning_team
+  #Adds total points value for each team
+  game_hash.map do |team, info|
+    team_points = 0
+    info[:players].each_value{|player_stats| team_points += player_stats[:points]}
+    info[:total_points] = team_points
+  end
+  #Returns name of team with most total points
+  game_hash.values.max_by {|team_info| team_info[:total_points]}[:team_name]
+end
+
+def player_with_longest_name
+  all_players.keys.max_by{|name| name.length}
+end
+
+def long_name_steals_a_ton?
+  player_with_longest_name == all_players.max_by{|name, stats| stats[:steals]}[0]
+end
 #binding.pry
-
-
-
-
-
-def xshoe_size(player)
-  #returns requested players shoe size if found on either team, and nil if not
-  game_hash.each_value do |team|
-    if (stats = team[:players][player]) #is nil if player isn't on team
-      return stats[:shoe]
-    else
-      nil
-    end
-  end
-
-  nil
-end
-
-def xplayer_stats(player)
-  #returns requested players stats if found on either team, and nil if not
-  game_hash.each_value do |team|
-    if (stats = team[:players][player]) #is nil if player isn't on team
-      return stats
-    else
-      nil
-    end
-  end
-
-  nil
-end
-
-def xnum_points_scored(player)
-  #returns requested players points if found on either team, and nil if not
-  game_hash.each_value do |team|
-    if (stats = team[:players][player]) #is nil if player isn't on team
-      return stats[:points]
-    else
-      nil
-    end
-  end
-
-  nil
-end
