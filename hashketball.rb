@@ -118,7 +118,7 @@ end
 
 def num_points_scored(name)
   hash_info = game_hash()
-  
+
   hash_info.each do |team, team_info|
     team_info.each do |info, players|
       if info == :players
@@ -135,7 +135,7 @@ end
 
 def shoe_size(name)
   hash_info = game_hash()
-  
+
   hash_info.each do |team, team_info|
     team_info.each do |info, players|
       if info == :players
@@ -152,7 +152,7 @@ end
 
 def team_colors(team_name)
   hash_info = game_hash()
-  
+
   hash_info.each do |team, team_info|
     team_info.each do |info, data|
       if data == team_name
@@ -160,12 +160,12 @@ def team_colors(team_name)
       end
     end
   end
-  
+
 end
 
 def team_names()
   hash_info = game_hash()
-  
+
   teams = hash_info.keys()
   teams.collect do |team|
     hash_info[team][:team_name]
@@ -175,29 +175,24 @@ end
 def player_numbers(team_name)
   hash_info = game_hash()
   player_numbers = []
-  
+
   hash_info.each do |team, team_info|
-    bool = false
     team_info.each do |team_key, team_value|
       if team_value == team_name
-        bool = true
-      end
-      if team_key == :players
-        team_value.each do |player, player_info|
-          if bool == true
+        players = team_info[:players]
+        players.each do |player, player_info|
             player_numbers.push(player_info[:number])
-          end
         end
       end
     end
   end
-  
+
   player_numbers
 end
 
 def player_stats(name)
   hash_info = game_hash()
-  
+
   hash_info.each do |team, team_info|
     team_info.each do |info, players|
       if info == :players
@@ -208,14 +203,14 @@ def player_stats(name)
         end
       end
     end
-  end  
+  end
 end
 
 def big_shoe_rebounds
    hash_info = game_hash()
    max = 0
    rebounds = -1
-  
+
   hash_info.each do |team, team_info|
     team_info.each do |info, players|
       if info == :players
@@ -231,12 +226,3 @@ def big_shoe_rebounds
   end
   rebounds
 end
-
-
-
-
-
-
-
-
-
