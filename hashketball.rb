@@ -120,9 +120,7 @@ def game_hash
 end
 
 def all_players
-  players = {}
-  game_hash.each_value{|team| players.merge!(team[:players])}
-  players
+  game_hash[:home][:players].merge(game_hash[:away][:players])
 end
 
 def num_points_scored(player)
@@ -190,4 +188,4 @@ end
 def long_name_steals_a_ton?
   player_with_longest_name == all_players.max_by{|name, stats| stats[:steals]}[0]
 end
-#binding.pry
+binding.pry
