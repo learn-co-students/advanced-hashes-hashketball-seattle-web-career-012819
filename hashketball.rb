@@ -131,30 +131,18 @@ def shoe_size(player)
   all_players[player][:shoe]
 end
 
+#returns requested teams colors, and nil if team not playing
 def team_colors(team_name)
-  #returns requested teams colors, and nil if team not playing
-  game_hash.each_value do |team|
-    if (team[:team_name] == team_name)
-      return team[:colors]
-    end
-  end
-
-  nil
+  if (team = (game_hash.values.find{|team| team[:team_name] == team_name})) then team[:colors] end
 end
 
 def team_names
   game_hash.each_value.map{|team| team[:team_name]}
 end
 
+#returns requested teams player numbers, and nil if team not playing
 def player_numbers(team_name)
-  #returns requested teams player numbers, and nil if team not playing
-  game_hash.each_value do |team|
-     if team_name == team[:team_name]
-       return team[:players].values.map{|stats| stats[:number]}
-     end
-   end
-
-   nil
+  if (team = (game_hash.values.find{|team| team[:team_name] == team_name})) then team[:players].values.map{|stats| stats[:number]} end
 end
 
 def player_stats(player)
@@ -165,20 +153,13 @@ def big_shoe_rebounds
   all_players.values.max_by{|stats| stats[:shoe]}[:rebounds]
 end
 
+#max_by returns array with key as first item (name) and value as second item (stats)
 def most_points_scored
-  #max_by returns array with key as first item (name) and value as second item (stats)
   all_players.max_by{|player,stats| stats[:points]}[0]
 end
 
 def winning_team
-  #Adds total points value for each team
-  game_hash.map do |team, info|
-    team_points = 0
-    info[:players].each_value{|player_stats| team_points += player_stats[:points]}
-    info[:total_points] = team_points
-  end
-  #Returns name of team with most total points
-  game_hash.values.max_by {|team_info| team_info[:total_points]}[:team_name]
+  game_hash.values.max_by{|info| info[:players].values.map{|player_stats| player_stats[:points]}.reduce(:+)}[:team_name]
 end
 
 def player_with_longest_name
@@ -188,4 +169,4 @@ end
 def long_name_steals_a_ton?
   player_with_longest_name == all_players.max_by{|name, stats| stats[:steals]}[0]
 end
-binding.pry
+# binding.pry
